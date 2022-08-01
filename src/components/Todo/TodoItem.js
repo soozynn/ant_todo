@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { deleteTodo } from "../../api/todo";
 
-const TodoItem = ({ id, title, setTodos, isShowsError }) => {
+const TodoItem = ({ id, title, setTodos, isShowsError, setErrorMessage }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRemoveTodo = useCallback(async () => {
@@ -15,11 +15,12 @@ const TodoItem = ({ id, title, setTodos, isShowsError }) => {
       setTodos((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       console.error(error);
+      setErrorMessage("Error: Todo Deletion failed :(");
       isShowsError(true);
     } finally {
       setIsLoading(false);
     }
-  }, [id, setTodos, isShowsError]);
+  }, [id, setTodos, isShowsError, setErrorMessage]);
 
   return (
     <li className="item">
@@ -42,6 +43,7 @@ TodoItem.propTypes = {
   title: PropTypes.string.isRequired,
   setTodos: PropTypes.func.isRequired,
   isShowsError: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
 };
 
 export default TodoItem;

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import TodoItem from "./TodoItem";
 
-const TodoList = ({ todos, setTodos, isShowsError }) => {
+const TodoList = ({ todos, setTodos, isShowsError, setErrorMessage }) => {
   return todos.length ? (
     <ul>
       {todos.map(({ id, title }) => (
@@ -12,6 +12,7 @@ const TodoList = ({ todos, setTodos, isShowsError }) => {
           title={title}
           setTodos={setTodos}
           isShowsError={isShowsError}
+          setErrorMessage={setErrorMessage}
         />
       ))}
     </ul>
@@ -31,6 +32,7 @@ TodoList.propTypes = {
   ).isRequired,
   setTodos: PropTypes.func.isRequired,
   isShowsError: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
 };
 
 export default TodoList;

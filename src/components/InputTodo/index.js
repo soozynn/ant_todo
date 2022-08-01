@@ -5,14 +5,15 @@ import PropTypes from "prop-types";
 import { createTodo } from "../../api/todo";
 import useFocus from "../../hooks/useFocus";
 
-const InputTodo = ({ setTodos, isShowsNotification }) => {
+const InputTodo = ({ setTodos, showError, isShowsError, setErrorMessage }) => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
 
   useEffect(() => {
+    if (showError) return;
     setFocus();
-  }, [setFocus]);
+  }, [setFocus, showError]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -20,13 +21,14 @@ const InputTodo = ({ setTodos, isShowsNotification }) => {
         e.preventDefault();
         setIsLoading(true);
 
-        const trimmed = inputText.trim();
-        if (!trimmed) {
-          isShowsNotification(true);
+        const trimmedInputText = inputText.trim();
+        if (!trimmedInputText) {
+          setErrorMessage("Please write something ✍️");
+          isShowsError(true);
           return;
         }
 
-        const newItem = { title: trimmed };
+        const newItem = { title: trimmedInputText };
         const { data } = await createTodo(newItem);
 
         if (data) {
@@ -34,13 +36,14 @@ const InputTodo = ({ setTodos, isShowsNotification }) => {
         }
       } catch (error) {
         console.error(error);
-        isShowsNotification(true);
+        setErrorMessage("Failed to create Todo :(");
+        isShowsError(true);
       } finally {
         setInputText("");
         setIsLoading(false);
       }
     },
-    [inputText, setTodos, isShowsNotification]
+    [inputText, setTodos, isShowsError, setErrorMessage]
   );
 
   return (

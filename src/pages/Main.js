@@ -9,21 +9,23 @@ import Notification from "../components/Notification";
 const Main = () => {
   const [todoListData, setTodoListData] = useState([]);
   const [showsError, isShowsError] = useState(false);
-  const [showsNotification, isShowsNotification] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     (async () => {
-      const { data } = await getTodoList();
-      setTodoListData(data || []);
+      try {
+        const { data } = await getTodoList();
+        setTodoListData(data || []);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage("Failed to get Todo list :(");
+        isShowsError(true);
+      }
     })();
   }, []);
 
   const handleCloseError = () => {
     isShowsError(false);
-  };
-
-  const handleCloseNotification = () => {
-    isShowsNotification(false);
   };
 
   return (
@@ -32,26 +34,22 @@ const Main = () => {
         <Header />
         <InputTodo
           setTodos={setTodoListData}
-          isShowsNotification={isShowsNotification}
+          showsError={showsError}
+          isShowsError={isShowsError}
+          setErrorMessage={setErrorMessage}
         />
         <TodoList
           todos={todoListData}
           setTodos={setTodoListData}
           isShowsError={isShowsError}
+          setErrorMessage={setErrorMessage}
         />
       </div>
       {showsError && (
         <Notification
-          message="Error: Todo Deletion failed :("
+          message={errorMessage}
           onClick={handleCloseError}
           isClosed={isShowsError}
-        />
-      )}
-      {showsNotification && (
-        <Notification
-          message="Please write something ✍️"
-          onClick={handleCloseNotification}
-          isClosed={isShowsNotification}
         />
       )}
     </div>

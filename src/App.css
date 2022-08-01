@@ -164,7 +164,7 @@ body {
   text-align: center;
 }
 
-.alert-container {
+.notification-container {
   min-width: 420px;
   right: 0;
   top: 10px;
@@ -178,7 +178,7 @@ body {
   overflow: hidden;
 }
 
-.alert-icon {
+.notification-icon {
   position: absolute;
   left: 20px;
   top: 50%;
@@ -187,13 +187,13 @@ body {
   font-size: 30px;
 }
 
-.alert-message {
+.notification-message {
   padding: 0 20px;
   color: red;
   font-size: 18px;
 }
 
-.alert-close-btn {
+.notification-close-btn {
   position: absolute;
   right: 0px;
   top: 50%;
@@ -203,18 +203,18 @@ body {
   cursor: pointer;
 }
 
-.alert-close-btn:hover {
+.notification-close-btn:hover {
   background-color: #ff8080;
 }
 
-.alert-btn-icon {
+.notification-btn-icon {
   display: flex;
   color: red;
   font-size: 22px;
   line-height: 40px;
 }
 
-.alert-container.show {
+.show {
   animation: slide 1s ease forwards;
 }
 
@@ -236,6 +236,15 @@ body {
   }
 }
 
-.alert-container.hide {
+.hide {
   display: none;
+}
+
+.blur {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
 }
