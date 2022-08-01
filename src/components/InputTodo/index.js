@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { createTodo } from "../../api/todo";
 import useFocus from "../../hooks/useFocus";
 
-const InputTodo = ({ setTodos }) => {
+const InputTodo = ({ setTodos, isShowsNotification }) => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
@@ -22,7 +22,8 @@ const InputTodo = ({ setTodos }) => {
 
         const trimmed = inputText.trim();
         if (!trimmed) {
-          return alert("Please write something");
+          isShowsNotification(true);
+          return;
         }
 
         const newItem = { title: trimmed };
@@ -33,13 +34,13 @@ const InputTodo = ({ setTodos }) => {
         }
       } catch (error) {
         console.error(error);
-        alert("Something went wrong.");
+        isShowsNotification(true);
       } finally {
         setInputText("");
         setIsLoading(false);
       }
     },
-    [inputText, setTodos]
+    [inputText, setTodos, isShowsNotification]
   );
 
   return (
