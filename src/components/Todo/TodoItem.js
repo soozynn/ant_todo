@@ -1,7 +1,8 @@
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useCallback, useState } from "react";
+import PropTypes from "prop-types";
 
-import { deleteTodo } from "../api/todo";
+import { deleteTodo } from "../../api/todo";
 
 const TodoItem = ({ id, title, setTodos }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +35,12 @@ const TodoItem = ({ id, title, setTodos }) => {
       </div>
     </li>
   );
+};
+
+TodoItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  setTodos: PropTypes.func.isRequired,
 };
 
 export default TodoItem;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import Header from "../components/Header";
-import InputTodo from "../components/InputTodo";
-import TodoList from "../components/TodoList";
+import Header from "../components/Header/index";
+import InputTodo from "../components/InputTodo/index";
+import TodoList from "../components/Todo/TodoList";
 import { getTodoList } from "../api/todo";
 
 const Main = () => {

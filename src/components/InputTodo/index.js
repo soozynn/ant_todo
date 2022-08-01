@@ -1,8 +1,9 @@
 import { FaPlusCircle, FaSpinner } from "react-icons/fa";
 import { useCallback, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-import { createTodo } from "../api/todo";
-import useFocus from "../hooks/useFocus";
+import { createTodo } from "../../api/todo";
+import useFocus from "../../hooks/useFocus";
 
 const InputTodo = ({ setTodos }) => {
   const [inputText, setInputText] = useState("");
@@ -38,7 +39,7 @@ const InputTodo = ({ setTodos }) => {
         setIsLoading(false);
       }
     },
-    [inputText, setTodos],
+    [inputText, setTodos]
   );
 
   return (
@@ -60,6 +61,10 @@ const InputTodo = ({ setTodos }) => {
       )}
     </form>
   );
+};
+
+InputTodo.propTypes = {
+  setTodos: PropTypes.func.isRequired,
 };
 
 export default InputTodo;
