@@ -1,26 +1,27 @@
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
+import { removeTodo, openError } from "../../features/todos/todosSlice";
 import { deleteTodo } from "../../api/todo";
 
-const TodoItem = ({ id, title, setTodos, isShowsError, setErrorMessage }) => {
+const TodoItem = ({ id, title }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleRemoveTodo = useCallback(async () => {
     try {
       setIsLoading(true);
       await deleteTodo(id);
-
-      setTodos((prev) => prev.filter((item) => item.id !== id));
+      dispatch(removeTodo(id));
     } catch (error) {
       console.error(error);
-      setErrorMessage("Error: Todo Deletion failed :(");
-      isShowsError(true);
+      dispatch(openError("Error: Todo Deletion failed :("));
     } finally {
       setIsLoading(false);
     }
-  }, [id, setTodos, isShowsError, setErrorMessage]);
+  }, [id, dispatch]);
 
   return (
     <li className="item">
@@ -39,11 +40,8 @@ const TodoItem = ({ id, title, setTodos, isShowsError, setErrorMessage }) => {
 };
 
 TodoItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  setTodos: PropTypes.func.isRequired,
-  isShowsError: PropTypes.func.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
+  id: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default TodoItem;

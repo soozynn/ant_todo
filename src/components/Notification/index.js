@@ -19,7 +19,7 @@ const Notification = ({ message, onClick, isClosed }) => {
 Notification.propTypes = {
   message: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  isClosed: PropTypes.func.isRequired,
+  isClosed: PropTypes.bool.isRequired,
 };
 
 export default Notification;

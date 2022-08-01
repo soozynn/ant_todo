@@ -1,19 +1,22 @@
 import { FaPlusCircle, FaSpinner } from "react-icons/fa";
 import { useCallback, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
 
+import { addTodo, openError } from "../../features/todos/todosSlice";
 import { createTodo } from "../../api/todo";
 import useFocus from "../../hooks/useFocus";
 
-const InputTodo = ({ setTodos, showError, isShowsError, setErrorMessage }) => {
+const InputTodo = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
   const { ref, setFocus } = useFocus();
 
   useEffect(() => {
-    if (showError) return;
+    if (todos.isError) return;
     setFocus();
-  }, [setFocus, showError]);
+  }, [setFocus, todos.isError]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -23,8 +26,7 @@ const InputTodo = ({ setTodos, showError, isShowsError, setErrorMessage }) => {
 
         const trimmedInputText = inputText.trim();
         if (!trimmedInputText) {
-          setErrorMessage("Please write something ✍️");
-          isShowsError(true);
+          dispatch(openError("Please write something ✍️"));
           return;
         }
 
@@ -32,18 +34,17 @@ const InputTodo = ({ setTodos, showError, isShowsError, setErrorMessage }) => {
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return setTodos((prev) => [...prev, data]);
+          dispatch(addTodo(data));
         }
       } catch (error) {
         console.error(error);
-        setErrorMessage("Failed to create Todo :(");
-        isShowsError(true);
+        dispatch(openError("Failed submit :("));
       } finally {
         setInputText("");
         setIsLoading(false);
       }
     },
-    [inputText, setTodos, isShowsError, setErrorMessage]
+    [inputText, dispatch]
   );
 
   return (
@@ -65,10 +66,6 @@ const InputTodo = ({ setTodos, showError, isShowsError, setErrorMessage }) => {
       )}
     </form>
   );
-};
-
-InputTodo.propTypes = {
-  setTodos: PropTypes.func.isRequired,
 };
 
 export default InputTodo;

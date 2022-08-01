@@ -1,57 +1,40 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
+import { closeError, getTodos } from "../features/todos/todosSlice";
+import { getTodoList } from "../api/todo";
 import Header from "../components/Header/index";
 import InputTodo from "../components/InputTodo/index";
 import TodoList from "../components/Todo/TodoList";
-import { getTodoList } from "../api/todo";
 import Notification from "../components/Notification";
 
 const Main = () => {
-  const [todoListData, setTodoListData] = useState([]);
-  const [showsError, isShowsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getTodoList();
-        setTodoListData(data || []);
-      } catch (error) {
-        console.error(error);
-        setErrorMessage("Failed to get Todo list :(");
-        isShowsError(true);
-      }
-    })();
-  }, []);
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
 
   const handleCloseError = () => {
-    isShowsError(false);
+    dispatch(closeError());
   };
+
+  useEffect(() => {
+    dispatch(getTodos());
+  }, [dispatch]);
 
   return (
     <div className="container">
       <div className="inner">
         <Header />
-        <InputTodo
-          setTodos={setTodoListData}
-          showsError={showsError}
-          isShowsError={isShowsError}
-          setErrorMessage={setErrorMessage}
-        />
-        <TodoList
-          todos={todoListData}
-          setTodos={setTodoListData}
-          isShowsError={isShowsError}
-          setErrorMessage={setErrorMessage}
-        />
+        <InputTodo />
+        <TodoList />
       </div>
-      {showsError && (
+      {todos.isError && (
         <Notification
-          message={errorMessage}
+          message={todos.errorMessage}
           onClick={handleCloseError}
-          isClosed={isShowsError}
+          isClosed={todos.isError}
         />
       )}
+      {todos.isLoading && <div>Todo를 불러오는 중...</div>}
     </div>
   );
 };

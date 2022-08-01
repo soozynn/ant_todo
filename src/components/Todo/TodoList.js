@@ -1,38 +1,19 @@
-import PropTypes from "prop-types";
-
+import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import TodoItem from "./TodoItem";
 
-const TodoList = ({ todos, setTodos, isShowsError, setErrorMessage }) => {
+const TodoList = () => {
+  const { todos } = useSelector((state) => state.todos);
+
   return todos.length ? (
     <ul>
       {todos.map(({ id, title }) => (
-        <TodoItem
-          key={id}
-          id={id}
-          title={title}
-          setTodos={setTodos}
-          isShowsError={isShowsError}
-          setErrorMessage={setErrorMessage}
-        />
+        <TodoItem key={uuidv4()} id={id} title={title} />
       ))}
     </ul>
   ) : (
     <div className="empty-list">...</div>
   );
-};
-
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      createdAt: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  setTodos: PropTypes.func.isRequired,
-  isShowsError: PropTypes.func.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
 };
 
 export default TodoList;
