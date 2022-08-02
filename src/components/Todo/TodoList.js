@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+
 import TodoItem from "./TodoItem";
 
 const TodoList = () => {
@@ -8,7 +8,7 @@ const TodoList = () => {
   return todos.length ? (
     <ul>
       {todos.map(({ id, title }) => (
-        <TodoItem key={uuidv4()} id={id} title={title} />
+        <TodoItem key={id} id={id} title={title} />
       ))}
     </ul>
   ) : (

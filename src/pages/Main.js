@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { closeError, getTodos } from "../features/todos/todosSlice";
-import { getTodoList } from "../api/todo";
 import Header from "../components/Header/index";
 import InputTodo from "../components/InputTodo/index";
 import TodoList from "../components/Todo/TodoList";

@@ -43,7 +43,9 @@ export const todosSlice = createSlice({
       })
       .addCase(getTodos.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.todos.push(action.payload);
+
+        if (state.todos.length) return;
+        state.todos.push(...action.payload);
       })
       .addCase(getTodos.rejected, (state) => {
         state.isError = true;
