@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { closeError, getTodos } from "../features/todos/todosSlice";
 import Header from "../components/Header/index";
-import InputTodo from "../components/Input/InputTodo";
+import InputTodo from "../components/InputTodo/index";
 import TodoList from "../components/Todo/TodoList";
 import Notification from "../components/Notification";
+import styles from "./Main.module.css";
 
 const Main = () => {
   const todos = useSelector((state) => state.todos);
@@ -20,8 +21,8 @@ const Main = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
-      <div className="inner">
+    <div className={styles.container}>
+      <div className={styles.inner}>
         <Header />
         <InputTodo />
         <TodoList />

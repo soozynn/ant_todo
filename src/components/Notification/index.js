@@ -2,14 +2,16 @@ import React from "react";
 import { FaExclamationTriangle, FaTimes } from "react-icons/fa";
 import PropTypes from "prop-types";
 
+import styles from "./Notification.module.css";
+
 const Notification = ({ message, onClick, isClosed }) => {
   return (
-    <div className={`notification-background ${isClosed ? "blur" : "hide"}`}>
-      <div className={`notification-container ${isClosed && "show"}`}>
-        <FaExclamationTriangle className="notification-icon" />
-        <h1 className="notification-message">{message}</h1>
-        <div className="notification-close-btn" onClick={onClick}>
-          <FaTimes className="notification-btn-icon" />
+    <div className={`${isClosed ? "blur" : "hide"}`}>
+      <div className={`${styles.container} ${isClosed && "show"}`}>
+        <FaExclamationTriangle className={styles.warnigIcon} />
+        <h1 className={styles.message}>{message}</h1>
+        <div className={styles.closeBtn} onClick={onClick}>
+          <FaTimes className={styles.closeIcon} />
         </div>
       </div>
     </div>

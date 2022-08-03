@@ -6,6 +6,7 @@ import { addTodo, openError } from "../../features/todos/todosSlice";
 import { createTodo } from "../../api/todo";
 import useFocus from "../../hooks/useFocus";
 import DropdownList from "../Dropdown/DropdownList";
+import styles from "./InputTodo.module.css";
 
 const InputTodo = () => {
   const [inputText, setInputText] = useState("");
@@ -56,9 +57,9 @@ const InputTodo = () => {
 
   return (
     <>
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className={styles.container} onSubmit={handleSubmit}>
         <input
-          className="input-text"
+          className={styles.text}
           placeholder="Add new todo..."
           ref={ref}
           value={inputText}
@@ -66,8 +67,8 @@ const InputTodo = () => {
           disabled={isLoading}
         />
         {!isLoading ? (
-          <button className="input-submit" type="submit">
-            <FaPlusCircle className="btn-plus" />
+          <button className={styles.submit} type="submit">
+            <FaPlusCircle className={styles.btn} />
           </button>
         ) : (
           <FaSpinner className="spinner" />

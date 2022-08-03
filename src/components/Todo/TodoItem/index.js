@@ -3,8 +3,9 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { removeTodo, openError } from "../../features/todos/todosSlice";
-import { deleteTodo } from "../../api/todo";
+import { removeTodo, openError } from "../../../features/todos/todosSlice";
+import { deleteTodo } from "../../../api/todo";
+import styles from "./TodoItem.module.css";
 
 const TodoItem = ({ id, title }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,12 +25,12 @@ const TodoItem = ({ id, title }) => {
   }, [id, dispatch]);
 
   return (
-    <li className="item">
+    <li className={styles.item}>
       <span>{title}</span>
-      <div className="item-option">
+      <div className={styles.option}>
         {!isLoading ? (
           <button onClick={() => handleRemoveTodo()}>
-            <FaTrash className="btn-trash" />
+            <FaTrash className={styles.btn} />
           </button>
         ) : (
           <FaSpinner className="spinner" />

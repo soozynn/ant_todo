@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  border-radius: calc(0.5 * 100px);
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.38);
+}
+
+.text {
+  width: 85%;
+  padding-right: 5px;
+  padding-left: 10px;
+  border-radius: calc(0.5 * 100px);
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.text,
+.submit {
+  height: 45px;
+  outline: none;
+  border: none;
+}
+
+.btn {
+  color: darkcyan;
+  font-size: 20px;
+}
+
+.btn:hover {
+  opacity: 0.5;
+}

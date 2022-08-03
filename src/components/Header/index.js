@@ -1,9 +1,11 @@
 import React from "react";
 
+import styles from "./Header.module.css";
+
 const Header = () => {
   return (
-    <header className="header-container">
-      <h1 className="header-text">Toodos</h1>
+    <header className={styles.container}>
+      <h1 className={styles.text}>Toodos</h1>
     </header>
   );
 };

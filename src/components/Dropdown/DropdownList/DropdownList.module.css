@@ -1,0 +1,12 @@
+.container {
+  width: 580px;
+  height: 200px;
+  position: absolute;
+  padding: 10px;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  background-color: white;
+  color: #78e7d3;
+  z-index: 10;
+  overflow: auto;
+}

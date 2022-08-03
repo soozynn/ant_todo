@@ -2,9 +2,10 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { createTodo } from "../../api/todo";
-import { addTodo, openError } from "../../features/todos/todosSlice";
-import DropdownItem from "./DropdownItem";
+import { createTodo } from "../../../api/todo";
+import { addTodo, openError } from "../../../features/todos/todosSlice";
+import DropdownItem from "../DropdownItem/index";
+import styles from "./DropdownList.module.css";
 
 const DropdownList = ({ list, setInputText }) => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const DropdownList = ({ list, setInputText }) => {
   };
 
   return list.length ? (
-    <ul className="dropdown-list">
+    <ul className={styles.container}>
       {list.map(({ id, title }) => (
         <DropdownItem key={id} title={title} onClick={handleClickItem} />
       ))}

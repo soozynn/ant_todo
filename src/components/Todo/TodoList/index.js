@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 
-import TodoItem from "./TodoItem";
+import TodoItem from "../TodoItem/index";
+import styles from "./TodoList.module.css";
 
 const TodoList = () => {
   const { todos } = useSelector((state) => state.todos);
@@ -12,7 +13,7 @@ const TodoList = () => {
       ))}
     </ul>
   ) : (
-    <div className="empty-list">...</div>
+    <div className={styles.empty}>...</div>
   );
 };
 
