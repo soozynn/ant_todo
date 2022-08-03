@@ -249,12 +249,6 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.dropdown-result {
-  display: flex;
-  justify-content: center;
-  color: #ececec;
-}
-
 .dropdown-list {
   position: absolute;
   width: 580px;

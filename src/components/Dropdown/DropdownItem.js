@@ -1,31 +1,9 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { createTodo } from "../../api/todo";
-import { addTodo, openError } from "../../features/todos/todosSlice";
-
-const DropdownItem = ({ title, setInputText }) => {
-  const dispatch = useDispatch();
-
-  const handleClickItem = async (e) => {
-    try {
-      const newItem = { title: e.target.value };
-      const { data } = await createTodo(newItem);
-
-      if (data) {
-        dispatch(addTodo(data));
-      }
-    } catch (error) {
-      console.error(error);
-      dispatch(openError("Failed create Todo :("));
-    } finally {
-      setInputText("");
-    }
-  };
-
+const DropdownItem = ({ title, onClick }) => {
   return (
-    <div className="dropdown-item" onClick={handleClickItem}>
+    <div className="dropdown-item" onClick={onClick}>
       {title}
     </div>
   );
@@ -33,7 +11,7 @@ const DropdownItem = ({ title, setInputText }) => {
 
 DropdownItem.propTypes = {
   title: PropTypes.string.isRequired,
-  setInputText: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default DropdownItem;

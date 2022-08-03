@@ -1,22 +1,48 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
+import { createTodo } from "../../api/todo";
+import { addTodo, openError } from "../../features/todos/todosSlice";
 import DropdownItem from "./DropdownItem";
 
-const DropdownList = ({ todos, setInputText }) => {
-  return todos.length ? (
+const DropdownList = ({ list, setInputText }) => {
+  const dispatch = useDispatch();
+
+  const handleClickItem = async (e) => {
+    try {
+      const newItem = { title: e.target.textContent };
+      const { data } = await createTodo(newItem);
+
+      if (data) {
+        dispatch(addTodo(data));
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch(openError("Failed create Todo :("));
+    } finally {
+      setInputText("");
+    }
+  };
+
+  return list.length ? (
     <ul className="dropdown-list">
-      {todos.map(({ id, title }) => (
-        <DropdownItem key={id} title={title} setInputText={setInputText} />
+      {list.map(({ id, title }) => (
+        <DropdownItem key={id} title={title} onClick={handleClickItem} />
       ))}
     </ul>
-  ) : (
-    <div className="dropdown-result">일치하는 항목이 없습니다.</div>
-  );
+  ) : null;
 };
 
 DropdownList.propTypes = {
-  title: PropTypes.string.isRequired,
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   setInputText: PropTypes.func.isRequired,
 };
 

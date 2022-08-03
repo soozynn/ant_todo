@@ -49,10 +49,9 @@ const InputTodo = () => {
   );
 
   const findMatchingInputValue = () => {
-    const matchedInputValue = todos.todos.filter(
-      (todo) => todo.title === inputText
+    return todos.todos.filter((todo) =>
+      todo.title.toLowerCase().includes(inputText.toLowerCase())
     );
-    return matchedInputValue;
   };
 
   return (
@@ -76,12 +75,10 @@ const InputTodo = () => {
       </form>
       {inputText && (
         <DropdownList
-          todos={findMatchingInputValue()}
+          list={findMatchingInputValue()}
+          inputText={inputText}
           setInputText={setInputText}
-        >
-          {/* 일치하는 값 색상 변경해주기 일치하는 리스트 보여주기 10개,
-          이후 무한 스크롤로 최대 10개씩 받아오기 */}
-        </DropdownList>
+        />
       )}
     </>
   );
