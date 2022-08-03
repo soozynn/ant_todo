@@ -48,10 +48,6 @@
   line-height: 40px;
 }
 
-.show {
-  animation: slide 1s ease forwards;
-}
-
 @keyframes slide {
   0% {
     transform: translateX(100%);
@@ -68,6 +64,10 @@
   80% {
     transform: translateX(-10px);
   }
+}
+
+.show {
+  animation: slide 1s ease forwards;
 }
 
 .hide {
