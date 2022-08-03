@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { closeError, getTodos } from "../features/todos/todosSlice";
 import Header from "../components/Header/index";
-import InputTodo from "../components/InputTodo/index";
+import InputTodo from "../components/Input/InputTodo";
 import TodoList from "../components/Todo/TodoList";
 import Notification from "../components/Notification";
 
@@ -24,6 +24,7 @@ const Main = () => {
       <div className="inner">
         <Header />
         <InputTodo />
+        {/* {드롭다운구현} */}
         <TodoList />
       </div>
       {todos.isError && (

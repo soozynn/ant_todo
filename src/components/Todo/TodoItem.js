@@ -40,8 +40,8 @@ const TodoItem = ({ id, title }) => {
 };
 
 TodoItem.propTypes = {
-  id: PropTypes.string,
-  title: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default TodoItem;
