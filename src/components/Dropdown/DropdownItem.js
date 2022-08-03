@@ -25,7 +25,7 @@ const DropdownItem = ({ title, setInputText }) => {
   };
 
   return (
-    <div className="dropdown-title" onClick={handleClickItem}>
+    <div className="dropdown-item" onClick={handleClickItem}>
       {title}
     </div>
   );

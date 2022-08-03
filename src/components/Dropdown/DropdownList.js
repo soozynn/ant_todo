@@ -5,7 +5,7 @@ import DropdownItem from "./DropdownItem";
 
 const DropdownList = ({ todos, setInputText }) => {
   return todos.length ? (
-    <ul>
+    <ul className="dropdown-list">
       {todos.map(({ id, title }) => (
         <DropdownItem key={id} title={title} setInputText={setInputText} />
       ))}

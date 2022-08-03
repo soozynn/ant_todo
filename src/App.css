@@ -31,7 +31,7 @@ body {
 
 .form-container {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   border-radius: calc(0.5 * 100px);
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.38);
@@ -253,4 +253,28 @@ body {
   display: flex;
   justify-content: center;
   color: #ececec;
+}
+
+.dropdown-list {
+  position: absolute;
+  width: 580px;
+  height: 200px;
+  padding: 10px;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  background-color: white;
+  color: #78e7d3;
+  z-index: 10;
+  overflow: auto;
+}
+
+.dropdown-item {
+  padding: 8px;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  cursor: pointer;
 }

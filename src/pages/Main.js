@@ -24,7 +24,6 @@ const Main = () => {
       <div className="inner">
         <Header />
         <InputTodo />
-        {/* {드롭다운구현} */}
         <TodoList />
       </div>
       {todos.isError && (
