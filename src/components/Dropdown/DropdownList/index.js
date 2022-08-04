@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -8,9 +8,12 @@ import DropdownItem from "../DropdownItem/index";
 import styles from "./DropdownList.module.css";
 
 const DropdownList = ({ list, setInputText }) => {
+  const [selectedId, setIsSelectedId] = useState("");
   const dispatch = useDispatch();
 
-  const handleClickItem = async (e) => {
+  const handleClickItem = async (e, id) => {
+    setIsSelectedId(id);
+
     try {
       const newItem = { title: e.target.textContent };
       const { data } = await createTodo(newItem);
@@ -23,16 +26,45 @@ const DropdownList = ({ list, setInputText }) => {
       dispatch(openError("Failed create Todo :("));
     } finally {
       setInputText("");
+      setIsSelectedId("");
     }
   };
 
-  return list.length ? (
+  const handleScroll = (e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (!bottom) return;
+
+    // 10개씩 더 불러오기
+  };
+
+  return list.length < 11 ? (
     <ul className={styles.container}>
       {list.map(({ id, title }) => (
-        <DropdownItem key={id} title={title} onClick={handleClickItem} />
+        <DropdownItem
+          key={id}
+          id={id}
+          title={title}
+          onClick={(e) => handleClickItem(e, id)}
+          selectedId={selectedId}
+        />
       ))}
     </ul>
-  ) : null;
+  ) : (
+    <ul className={styles.container} onScroll={handleScroll}>
+      {list.map(({ id, title }) => (
+        <DropdownItem
+          key={id}
+          id={id}
+          title={title}
+          onClick={(e) => handleClickItem(e, id)}
+          selectedId={selectedId}
+        />
+      ))}
+      <div className={styles.more}>...</div>
+    </ul>
+  );
 };
 
 DropdownList.propTypes = {

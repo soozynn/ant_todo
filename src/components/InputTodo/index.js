@@ -40,7 +40,7 @@ const InputTodo = () => {
         }
       } catch (error) {
         console.error(error);
-        dispatch(openError("Failed submit :("));
+        dispatch(openError("Failed create Todo :("));
       } finally {
         setInputText("");
         setIsLoading(false);
@@ -74,7 +74,7 @@ const InputTodo = () => {
           <FaSpinner className="spinner" />
         )}
       </form>
-      {inputText && (
+      {inputText && findMatchingInputValue().length > 0 && (
         <DropdownList
           list={findMatchingInputValue()}
           inputText={inputText}
