@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { truncateTitle } from "../../../utils/truncateString";
 import styles from "./DropdownItem.module.css";
 
 const DropdownItem = ({ id, title, onClick, selectedId, inputText }) => {
@@ -12,7 +13,7 @@ const DropdownItem = ({ id, title, onClick, selectedId, inputText }) => {
       className={`${styles.item} ${selectedId === id ? styles.active : ""}`}
       onClick={onClick}
     >
-      {title}
+      {truncateTitle(title, 35)}
       {/* {inputText === ? <span style={styles.active}> {title}</span> : title} */}
     </div>
   );
