@@ -50,8 +50,17 @@ const InputTodo = () => {
   );
 
   const findMatchingInputValue = () => {
+    const removedSpaceArr = inputText
+      .replaceAll(" ", "")
+      .toLowerCase()
+      .split("");
+
     return todos.todos.filter((todo) =>
-      todo.title.toLowerCase().includes(inputText.toLowerCase())
+      todo.title
+        .replaceAll(" ", "")
+        .toLowerCase()
+        .split("")
+        .some((char) => removedSpaceArr.includes(char))
     );
   };
 
@@ -77,7 +86,6 @@ const InputTodo = () => {
       {inputText && findMatchingInputValue().length > 0 && (
         <DropdownList
           list={findMatchingInputValue()}
-          inputText={inputText}
           setInputText={setInputText}
         />
       )}

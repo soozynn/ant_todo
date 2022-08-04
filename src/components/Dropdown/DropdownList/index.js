@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { FaSpinner } from "react-icons/fa";
 
 import { createTodo } from "../../../api/todo";
 import { addTodo, openError } from "../../../features/todos/todosSlice";
@@ -9,6 +10,7 @@ import styles from "./DropdownList.module.css";
 
 const DropdownList = ({ list, setInputText }) => {
   const [selectedId, setIsSelectedId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickItem = async (e, id) => {
@@ -30,13 +32,21 @@ const DropdownList = ({ list, setInputText }) => {
     }
   };
 
-  const handleScroll = (e) => {
+  const handleScroll = async (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
 
     if (!bottom) return;
 
-    // 10개씩 더 불러오기
+    try {
+      setIsLoading(true);
+      // 10개 추가로 보여주기
+    } catch (error) {
+      console.error(error);
+      dispatch(openError("Failed to get more matching todos :("));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return list.length < 11 ? (
@@ -53,16 +63,24 @@ const DropdownList = ({ list, setInputText }) => {
     </ul>
   ) : (
     <ul className={styles.container} onScroll={handleScroll}>
-      {list.map(({ id, title }) => (
-        <DropdownItem
-          key={id}
-          id={id}
-          title={title}
-          onClick={(e) => handleClickItem(e, id)}
-          selectedId={selectedId}
-        />
-      ))}
-      <div className={styles.more}>...</div>
+      {list
+        .filter((_, index) => index < 10)
+        .map(({ id, title }) => (
+          <DropdownItem
+            key={id}
+            id={id}
+            title={title}
+            onClick={(e) => handleClickItem(e, id)}
+            selectedId={selectedId}
+          />
+        ))}
+      {!isLoading ? (
+        <div className={styles.moreIcon}>...</div>
+      ) : (
+        <div className={styles.spinnerWrapper}>
+          <FaSpinner className={styles.spinner} />
+        </div>
+      )}
     </ul>
   );
 };
