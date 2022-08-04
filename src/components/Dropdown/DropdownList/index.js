@@ -8,7 +8,7 @@ import { addTodo, openError } from "../../../features/todos/todosSlice";
 import DropdownItem from "../DropdownItem/index";
 import styles from "./DropdownList.module.css";
 
-const DropdownList = ({ list, setInputText }) => {
+const DropdownList = ({ list, inputText, setInputText }) => {
   const [selectedId, setIsSelectedId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -58,6 +58,7 @@ const DropdownList = ({ list, setInputText }) => {
           title={title}
           onClick={(e) => handleClickItem(e, id)}
           selectedId={selectedId}
+          inputText={inputText}
         />
       ))}
     </ul>
@@ -72,6 +73,7 @@ const DropdownList = ({ list, setInputText }) => {
             title={title}
             onClick={(e) => handleClickItem(e, id)}
             selectedId={selectedId}
+            inputText={inputText}
           />
         ))}
       {!isLoading ? (
@@ -94,6 +96,7 @@ DropdownList.propTypes = {
       updatedAt: PropTypes.string.isRequired,
     })
   ).isRequired,
+  inputText: PropTypes.string.isRequired,
   setInputText: PropTypes.func.isRequired,
 };
 

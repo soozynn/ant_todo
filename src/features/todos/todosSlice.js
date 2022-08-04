@@ -40,14 +40,17 @@ export const todosSlice = createSlice({
     builder
       .addCase(getTodos.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
       })
       .addCase(getTodos.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isError = false;
 
         if (state.todos.length) return;
         state.todos.push(...action.payload);
       })
       .addCase(getTodos.rejected, (state) => {
+        state.isLoading = false;
         state.isError = true;
         state.errorMessage = "Failed to get Todo list :(";
       });

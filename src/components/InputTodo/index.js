@@ -1,6 +1,7 @@
 import { FaPlusCircle, FaSpinner } from "react-icons/fa";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { debounce } from "lodash";
 
 import { addTodo, openError } from "../../features/todos/todosSlice";
 import { createTodo } from "../../api/todo";
@@ -23,10 +24,25 @@ const InputTodo = () => {
   const handleSubmit = useCallback(
     async (e) => {
       try {
+        // const key = e.charCode || e.keyCode || 0;
+
+        // if (key === 13 || !key) {
+        //   e.preventDefault();
+        //   엔터 키 입력 시 useEffect 미동작, focus 먹힘
+        //   return;
+        // }
+
         e.preventDefault();
         setIsLoading(true);
 
         const trimmedInputText = inputText.trim();
+        const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+        if (specialChars.test(trimmedInputText)) {
+          dispatch(openError("Please enter excluding special characters"));
+          return;
+        }
+
         if (!trimmedInputText) {
           dispatch(openError("Please write something ✍️"));
           return;
@@ -48,6 +64,10 @@ const InputTodo = () => {
     },
     [inputText, dispatch]
   );
+
+  const debouncedOnChange = (text) => {
+    debounce(() => setInputText(text), 500)();
+  };
 
   const findMatchingInputValue = () => {
     const removedSpaceArr = inputText
@@ -71,8 +91,7 @@ const InputTodo = () => {
           className={styles.text}
           placeholder="Add new todo..."
           ref={ref}
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
+          onChange={(e) => debouncedOnChange(e.target.value)}
           disabled={isLoading}
         />
         {!isLoading ? (
@@ -86,6 +105,7 @@ const InputTodo = () => {
       {inputText && findMatchingInputValue().length > 0 && (
         <DropdownList
           list={findMatchingInputValue()}
+          inputText={inputText}
           setInputText={setInputText}
         />
       )}
