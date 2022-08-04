@@ -5,7 +5,7 @@ import styles from "./Character.module.css";
 
 const Character = ({ inputText, character }) => {
   return (
-    <span className={`${inputText === character ? styles.color : ""}`}>
+    <span className={`${inputText.includes(character) ? styles.color : ""}`}>
       {character}
     </span>
   );
