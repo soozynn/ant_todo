@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import { removeTodo, openError } from "../../../features/todos/todosSlice";
-import { truncateTitle } from "../../../utils/truncateString";
 import { deleteTodo } from "../../../api/todo";
 import styles from "./TodoItem.module.css";
 
@@ -27,7 +26,7 @@ const TodoItem = ({ id, title }) => {
 
   return (
     <li className={styles.item}>
-      <span>{truncateTitle(title, 26)}</span>
+      <span>{title}</span>
       <div className={styles.option}>
         {!isLoading ? (
           <button onClick={() => handleRemoveTodo()}>
