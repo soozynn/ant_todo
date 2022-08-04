@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from "uuid";
 import Character from "../Character";
 import styles from "./DropdownItem.module.css";
 
-const DropdownItem = ({ id, title, onClick, selectedId, inputText }) => {
+const DropdownItem = ({ id, title, onClick, itemId, inputText }) => {
   const titleCharArr = title.split("");
   const isLongCharacter = title.length > 35 ? true : false;
 
   return (
     <div
-      className={`${styles.item} ${selectedId === id ? styles.active : ""}`}
+      className={`${styles.item} ${itemId === id ? styles.active : ""}`}
       onClick={onClick}
     >
       {isLongCharacter
@@ -36,7 +36,7 @@ DropdownItem.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  selectedId: PropTypes.string.isRequired,
+  itemId: PropTypes.string.isRequired,
   inputText: PropTypes.string.isRequired,
 };
 

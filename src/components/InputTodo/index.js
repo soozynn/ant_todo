@@ -14,7 +14,7 @@ const InputTodo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
-  const { ref, setFocus } = useFocus();
+  const { ref, setFocus, resetFocus } = useFocus();
 
   useEffect(() => {
     if (todos.isError) return;
@@ -24,14 +24,6 @@ const InputTodo = () => {
   const handleSubmit = useCallback(
     async (e) => {
       try {
-        // const key = e.charCode || e.keyCode || 0;
-
-        // if (key === 13 || !key) {
-        //   e.preventDefault();
-        //   엔터 키 입력 시 useEffect 미동작, focus 먹힘
-        //   return;
-        // }
-
         e.preventDefault();
         setIsLoading(true);
 
@@ -58,11 +50,12 @@ const InputTodo = () => {
         console.error(error);
         dispatch(openError("Failed create Todo :("));
       } finally {
+        resetFocus();
         setInputText("");
         setIsLoading(false);
       }
     },
-    [inputText, dispatch]
+    [inputText, dispatch, resetFocus]
   );
 
   const debouncedOnChange = (text) => {
@@ -107,6 +100,7 @@ const InputTodo = () => {
           list={findMatchingInputValue()}
           inputText={inputText}
           setInputText={setInputText}
+          resetFocus={resetFocus}
         />
       )}
     </>

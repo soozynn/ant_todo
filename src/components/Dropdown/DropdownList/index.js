@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, forwardRef } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { FaSpinner } from "react-icons/fa";
@@ -8,29 +8,33 @@ import { addTodo, openError } from "../../../features/todos/todosSlice";
 import DropdownItem from "../DropdownItem/index";
 import styles from "./DropdownList.module.css";
 
-const DropdownList = ({ list, inputText, setInputText }) => {
-  const [selectedId, setIsSelectedId] = useState("");
+const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
+  const [itemId, setItemId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const handleClickItem = async (e, id) => {
-    setIsSelectedId(id);
+  const handleClickItem = useCallback(
+    async (e, id) => {
+      setItemId(id);
 
-    try {
-      const newItem = { title: e.target.textContent };
-      const { data } = await createTodo(newItem);
+      try {
+        const newItem = { title: e.target.textContent };
+        const { data } = await createTodo(newItem);
 
-      if (data) {
-        dispatch(addTodo(data));
+        if (data) {
+          dispatch(addTodo(data));
+        }
+      } catch (error) {
+        console.error(error);
+        dispatch(openError("Failed create Todo :("));
+      } finally {
+        resetFocus();
+        setInputText("");
+        setItemId("");
       }
-    } catch (error) {
-      console.error(error);
-      dispatch(openError("Failed create Todo :("));
-    } finally {
-      setInputText("");
-      setIsSelectedId("");
-    }
-  };
+    },
+    [dispatch, setInputText, resetFocus]
+  );
 
   const handleScroll = async (e) => {
     const bottom =
@@ -57,7 +61,7 @@ const DropdownList = ({ list, inputText, setInputText }) => {
           id={id}
           title={title}
           onClick={(e) => handleClickItem(e, id)}
-          selectedId={selectedId}
+          itemId={itemId}
           inputText={inputText}
         />
       ))}
@@ -72,7 +76,7 @@ const DropdownList = ({ list, inputText, setInputText }) => {
             id={id}
             title={title}
             onClick={(e) => handleClickItem(e, id)}
-            selectedId={selectedId}
+            itemId={itemId}
             inputText={inputText}
           />
         ))}
@@ -98,6 +102,7 @@ DropdownList.propTypes = {
   ).isRequired,
   inputText: PropTypes.string.isRequired,
   setInputText: PropTypes.func.isRequired,
+  resetFocus: PropTypes.func.isRequired,
 };
 
 export default DropdownList;
