@@ -50,6 +50,10 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
     if (!ref.current) return;
     observer.observe(ref.current);
     setIsLoading(false);
+
+    return () => {
+      observer && observer.disconnect(ref);
+    };
   }, []);
 
   useEffect(() => {
