@@ -15,17 +15,26 @@
 .moreIcon {
   display: flex;
   justify-content: center;
-  color: #7e7e7e;
+  left: 20.83%;
+  right: 20.83%;
+  top: 43.75%;
+  bottom: 43.75%;
   font-size: 24px;
+  color: #9f9f9f;
 }
 
 .spinnerWrapper {
   display: flex;
   justify-content: center;
+  left: 13.4%;
+  right: 13.4%;
+  top: 13.4%;
+  bottom: 13.4%;
 }
 
 .spinner {
   font-size: 20px;
+  color: #4b4b4b;
   animation: spin 2s linear infinite;
 }
 
@@ -36,4 +45,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.hide {
+  display: none;
 }

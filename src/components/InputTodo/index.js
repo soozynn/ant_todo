@@ -12,14 +12,10 @@ import styles from "./InputTodo.module.css";
 const InputTodo = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [filteredTodos, setFilteredTodos] = useState([]);
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
   const { ref, setFocus, resetFocus } = useFocus();
-
-  useEffect(() => {
-    if (todos.isError) return;
-    setFocus();
-  }, [setFocus, todos.isError]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -62,11 +58,8 @@ const InputTodo = () => {
     debounce(() => setInputText(text), 500)();
   };
 
-  const findMatchingInputValue = () => {
-    const removedSpaceArr = inputText
-      .replaceAll(" ", "")
-      .toLowerCase()
-      .split("");
+  const findMatchingTitle = () => {
+    const removedSpaceArr = inputText.replaceAll(" ", "").toLowerCase();
 
     return todos.todos.filter((todo) =>
       todo.title
@@ -76,6 +69,11 @@ const InputTodo = () => {
         .some((char) => removedSpaceArr.includes(char))
     );
   };
+
+  useEffect(() => {
+    if (todos.isError) return;
+    setFocus();
+  }, [setFocus, todos.isError]);
 
   return (
     <>
@@ -95,9 +93,9 @@ const InputTodo = () => {
           <FaSpinner className="spinner" />
         )}
       </form>
-      {inputText && findMatchingInputValue().length > 0 && (
+      {inputText && findMatchingTitle().length > 0 && (
         <DropdownList
-          list={findMatchingInputValue()}
+          list={findMatchingTitle()}
           inputText={inputText}
           setInputText={setInputText}
           resetFocus={resetFocus}

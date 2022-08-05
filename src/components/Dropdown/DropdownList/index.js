@@ -1,4 +1,4 @@
-import React, { useState, useCallback, forwardRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { FaSpinner } from "react-icons/fa";
@@ -11,6 +11,10 @@ import styles from "./DropdownList.module.css";
 const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
   const [itemId, setItemId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [count, setCount] = useState(10);
+  const [todos, setTodos] = useState([...list.slice(0, 10)]);
+  const ref = useRef();
   const dispatch = useDispatch();
 
   const handleClickItem = useCallback(
@@ -36,22 +40,25 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
     [dispatch, setInputText, resetFocus]
   );
 
-  const handleScroll = async (e) => {
-    const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-
-    if (!bottom) return;
-
-    try {
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const firstEntry = entries[0];
+      setHasMore(firstEntry.isIntersecting);
       setIsLoading(true);
-      // 10개 추가로 보여주기
-    } catch (error) {
-      console.error(error);
-      dispatch(openError("Failed to get more matching todos :("));
-    } finally {
+    });
+
+    if (!ref.current) return;
+    observer.observe(ref.current);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (hasMore && list.length > todos.length) {
+      setTodos((prev) => [...prev, ...list.slice(count, count + 10)]);
+      setCount((prev) => prev + 10);
       setIsLoading(false);
     }
-  };
+  }, [hasMore, count, list, todos.length]);
 
   return list.length < 11 ? (
     <ul className={styles.container}>
@@ -67,23 +74,32 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
       ))}
     </ul>
   ) : (
-    <ul className={styles.container} onScroll={handleScroll}>
-      {list
-        .filter((_, index) => index < 10)
-        .map(({ id, title }) => (
-          <DropdownItem
-            key={id}
-            id={id}
-            title={title}
-            onClick={(e) => handleClickItem(e, id)}
-            itemId={itemId}
-            inputText={inputText}
-          />
-        ))}
+    <ul className={styles.container}>
+      {todos.map(({ id, title }) => (
+        <DropdownItem
+          key={id}
+          id={id}
+          title={title}
+          onClick={(e) => handleClickItem(e, id)}
+          itemId={itemId}
+          inputText={inputText}
+        />
+      ))}
       {!isLoading ? (
-        <div className={styles.moreIcon}>...</div>
+        <div
+          className={`${
+            list.length > todos.length ? styles.moreIcon : styles.hide
+          }`}
+          ref={ref}
+        >
+          ...
+        </div>
       ) : (
-        <div className={styles.spinnerWrapper}>
+        <div
+          className={`${
+            list.length > todos.length ? styles.spinnerWrapper : styles.hide
+          }`}
+        >
           <FaSpinner className={styles.spinner} />
         </div>
       )}
