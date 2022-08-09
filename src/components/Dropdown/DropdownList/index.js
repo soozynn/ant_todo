@@ -13,7 +13,6 @@ const DropdownList = ({
   inputText,
   setInputText,
   resetValue,
-  isLoading,
   setIsLoading,
 }) => {
   const [itemId, setItemId] = useState("");
@@ -51,24 +50,29 @@ const DropdownList = ({
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       const firstEntry = entries[0];
-      setHasMore(firstEntry.isIntersecting);
-      setIsLoading(true);
+
+      if (firstEntry.isIntersecting) {
+        setHasMore(true);
+      }
     });
 
-    if (!ref.current) return;
-    observer.observe(ref.current);
-    setIsLoading(false);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
     return () => {
-      observer && observer.disconnect(ref);
+      observer.disconnect();
     };
   }, [setIsLoading]);
 
   useEffect(() => {
-    if (hasMore && list.length > todos.length) {
-      setTodos((prev) => [...prev, ...list.slice(count, count + 10)]);
-      setCount((prev) => prev + 10);
-      setIsLoading(false);
+    if (list.length <= todos.length) return;
+    if (hasMore) {
+      setTimeout(() => {
+        setTodos((prev) => [...prev, ...list.slice(count, count + 10)]);
+        setCount((prev) => prev + 10);
+        setHasMore(false);
+      }, 3000);
     }
   }, [count, hasMore, list, setIsLoading, todos.length]);
 
@@ -97,7 +101,7 @@ const DropdownList = ({
           inputText={inputText}
         />
       ))}
-      {!isLoading ? (
+      {!hasMore ? (
         <div
           className={`${
             list.length > todos.length ? styles.moreIcon : styles.hide
@@ -131,7 +135,6 @@ DropdownList.propTypes = {
   inputText: PropTypes.string.isRequired,
   setInputText: PropTypes.func.isRequired,
   resetValue: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
   setIsLoading: PropTypes.func,
 };
 
