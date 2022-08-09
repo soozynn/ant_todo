@@ -12,10 +12,14 @@ import styles from "./InputTodo.module.css";
 const InputTodo = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [filteredTodos, setFilteredTodos] = useState([]);
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
-  const { ref, setFocus, resetFocus } = useFocus();
+  const { ref, setFocus, resetValue } = useFocus();
+
+  useEffect(() => {
+    if (todos.isError) return;
+    setFocus();
+  }, [setFocus, todos.isError]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -46,12 +50,12 @@ const InputTodo = () => {
         console.error(error);
         dispatch(openError("Failed create Todo :("));
       } finally {
-        resetFocus();
+        resetValue();
         setInputText("");
         setIsLoading(false);
       }
     },
-    [inputText, dispatch, resetFocus]
+    [inputText, dispatch, resetValue]
   );
 
   const debouncedOnChange = (text) => {
@@ -69,11 +73,6 @@ const InputTodo = () => {
         .some((char) => removedSpaceArr.includes(char))
     );
   };
-
-  useEffect(() => {
-    if (todos.isError) return;
-    setFocus();
-  }, [setFocus, todos.isError]);
 
   return (
     <>
@@ -98,7 +97,8 @@ const InputTodo = () => {
           list={findMatchingTitle()}
           inputText={inputText}
           setInputText={setInputText}
-          resetFocus={resetFocus}
+          resetValue={resetValue}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

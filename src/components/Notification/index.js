@@ -6,7 +6,9 @@ import styles from "./Notification.module.css";
 
 const Notification = ({ message, onClick, isClosed }) => {
   return (
-    <div className={`${isClosed ? styles.blur : styles.hide}`}>
+    <div
+      className={`${styles.background} ${isClosed ? styles.blur : styles.hide}`}
+    >
       <div className={`${styles.container} ${isClosed && styles.show}`}>
         <FaExclamationTriangle className={styles.warnigIcon} />
         <h1 className={styles.message}>{message}</h1>

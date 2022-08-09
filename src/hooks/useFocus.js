@@ -6,11 +6,11 @@ const useFocus = () => {
     ref.current && ref.current.focus();
   };
 
-  const resetFocus = () => {
+  const resetValue = () => {
     ref.current.value = "";
   };
 
-  return { ref, setFocus, resetFocus };
+  return { ref, setFocus, resetValue };
 };
 
 export default useFocus;

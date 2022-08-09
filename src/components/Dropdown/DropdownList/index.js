@@ -8,9 +8,15 @@ import { addTodo, openError } from "../../../features/todos/todosSlice";
 import DropdownItem from "../DropdownItem/index";
 import styles from "./DropdownList.module.css";
 
-const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
+const DropdownList = ({
+  list,
+  inputText,
+  setInputText,
+  resetValue,
+  isLoading,
+  setIsLoading,
+}) => {
   const [itemId, setItemId] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [count, setCount] = useState(10);
   const [todos, setTodos] = useState([...list.slice(0, 10)]);
@@ -19,9 +25,10 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
 
   const handleClickItem = useCallback(
     async (e, id) => {
-      setItemId(id);
-
       try {
+        setItemId(id);
+        setIsLoading(true);
+
         const newItem = { title: e.target.textContent };
         const { data } = await createTodo(newItem);
 
@@ -32,12 +39,13 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
         console.error(error);
         dispatch(openError("Failed create Todo :("));
       } finally {
-        resetFocus();
+        resetValue();
         setInputText("");
         setItemId("");
+        setIsLoading(false);
       }
     },
-    [dispatch, setInputText, resetFocus]
+    [dispatch, setInputText, resetValue, setIsLoading]
   );
 
   useEffect(() => {
@@ -54,7 +62,7 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
     return () => {
       observer && observer.disconnect(ref);
     };
-  }, []);
+  }, [setIsLoading]);
 
   useEffect(() => {
     if (hasMore && list.length > todos.length) {
@@ -62,7 +70,7 @@ const DropdownList = ({ list, inputText, setInputText, resetFocus }) => {
       setCount((prev) => prev + 10);
       setIsLoading(false);
     }
-  }, [hasMore, count, list, todos.length]);
+  }, [count, hasMore, list, setIsLoading, todos.length]);
 
   return list.length < 11 ? (
     <ul className={styles.container}>
@@ -122,7 +130,9 @@ DropdownList.propTypes = {
   ).isRequired,
   inputText: PropTypes.string.isRequired,
   setInputText: PropTypes.func.isRequired,
-  resetFocus: PropTypes.func.isRequired,
+  resetValue: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  setIsLoading: PropTypes.func,
 };
 
 export default DropdownList;
