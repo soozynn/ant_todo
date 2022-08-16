@@ -7,8 +7,8 @@ import styles from "./DropdownItem.module.css";
 
 const DropdownItem = ({ id, title, onClick, itemId, inputText }) => {
   const titleCharArr = title.split("");
-  const isLongCharacter = title.length > 35 ? true : false;
-
+  const isLongCharacter = title.length > 35; // 뒤에 불필요
+  // 데이터 타입이 불리언으로 정해져있,
   return (
     <div
       className={`${styles.item} ${itemId === id ? styles.active : ""}`}
@@ -24,10 +24,10 @@ const DropdownItem = ({ id, title, onClick, itemId, inputText }) => {
                 inputText={inputText}
               />
             ))
-        : titleCharArr.map((char) => (
+        : /// 내장으로 넣는게
+          titleCharArr.map((char) => (
             <Character key={uuidv4()} character={char} inputText={inputText} />
           ))}
-      {isLongCharacter && <span>...</span>}
     </div>
   );
 };

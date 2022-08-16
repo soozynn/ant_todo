@@ -64,7 +64,7 @@ const InputTodo = () => {
 
   const findMatchingTitle = () => {
     const removedSpaceArr = inputText.replaceAll(" ", "").toLowerCase();
-
+    // 워드별로가 베터, trim 있어서 리플레이스불필요
     return todos.todos.filter((todo) =>
       todo.title
         .replaceAll(" ", "")

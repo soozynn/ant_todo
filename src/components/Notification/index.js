@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import styles from "./Notification.module.css";
 
-const Notification = ({ message, onClick, isClosed }) => {
+const Notification = ({ message = "error", onClick, isClosed }) => {
   return (
     <div
       className={`${styles.background} ${isClosed ? styles.blur : styles.hide}`}
@@ -19,9 +19,9 @@ const Notification = ({ message, onClick, isClosed }) => {
     </div>
   );
 };
-
+// 제너릭하게
 Notification.propTypes = {
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
   onClick: PropTypes.func.isRequired,
   isClosed: PropTypes.bool.isRequired,
 };
